@@ -11,29 +11,35 @@ class ReleasePlugin implements Plugin<Project> {
         PublishExtension extension = project.extensions.create('publish', PublishExtension)
         project.afterEvaluate {
             project.apply([plugin: 'maven-publish'])
-            attachArtifacts(project)
+            attachArtifacts(extension, project)
             new BintrayPlugin().apply(project)
             new BintrayConfiguration(extension).configure(project)
         }
     }
 
-    void attachArtifacts(Project project) {
-        Artifacts artifacts = project.plugins.hasPlugin('com.android.library') ? new AndroidArtifacts() : new JavaArtifacts()
-        PropertyFinder propertyFinder = new PropertyFinder(project, project.publish)
-        project.publishing {
-            publications {
-                maven(MavenPublication) {
-                    groupId project.publish.groupId
-                    artifactId project.publish.artifactId
-                    version propertyFinder.getPublishVersion()
-
-                    artifacts.all(it.name, project).each {
-                        delegate.artifact it
-                    }
-
-                    from artifacts.from(project)
-                }
+    void attachArtifacts(PublishExtension extension, Project project) {
+        if (project.plugins.hasPlugin('com.android.library')) {
+            project.android.libraryVariants.each { variant ->
+                def artifactId = extension.artifactId;
+                addArtifact(project, variant.name, artifactId, new AndroidArtifacts(variant))
             }
+        } else {
+            addArtifact(project, 'maven', project.publish.artifactId, new JavaArtifacts())
+        }
+    }
+
+
+    void addArtifact(Project project, String name, String artifact, Artifacts artifacts) {
+        PropertyFinder propertyFinder = new PropertyFinder(project, project.publish)
+        project.publishing.publications.create(name, MavenPublication) {
+            groupId project.publish.groupId
+            artifactId artifact
+            version = propertyFinder.publishVersion
+
+            artifacts.all(it.name, project).each {
+                delegate.artifact it
+            }
+            from artifacts.from(project)
         }
     }
 }
