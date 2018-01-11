@@ -21,11 +21,10 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:<latest-version>
+        classpath 'com.novoda:bintray-release:<latest-version>'
     }
 }
 ```
-
 
 ## Simple usage
 
@@ -36,9 +35,24 @@ publish {
     userOrg = 'novoda'
     groupId = 'com.novoda'
     artifactId = 'bintray-release'
-    publishVersion = '0.3.4'
+    publishVersion = '0.6.1'
     desc = 'Oh hi, this is a nice description for a project, right?'
     website = 'https://github.com/novoda/bintray-release'
+}
+```
+
+If you use [Kotlin DSL](https://github.com/gradle/kotlin-dsl) use:
+
+```kotlin
+import com.novoda.gradle.release.PublishExtension
+
+configure<PublishExtension> {
+  userOrg = "novoda"
+  groupId = "com.novoda"
+  artifactId = "bintray-release"
+  publishVersion = "0.6.1"
+  desc = "Oh hi, this is a nice description for a project, right?"
+  website = "https://github.com/novoda/bintray-release"
 }
 ```
 
