@@ -1,9 +1,10 @@
-
-
-allprojects {
+subprojects {
     repositories {
-        google()
         jcenter()
     }
-    version = "0.8.0"
+}
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+    gradleVersion = '5.4.1'
 }

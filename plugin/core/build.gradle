@@ -1,0 +1,25 @@
+apply plugin: 'groovy'
+apply plugin: 'java-gradle-plugin'
+apply from: 'compat.gradle'
+
+dependencies {
+    implementation 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+}
+
+compileGroovy {
+    sourceCompatibility = '1.6'
+    targetCompatibility = '1.6'
+}
+
+gradlePlugin {
+    plugins {
+        binrayRelease {
+            id = 'com.novoda.bintray-release'
+            implementationClass = 'com.novoda.gradle.release.ReleasePlugin'
+        }
+        legacy {
+            id = 'bintray-release'
+            implementationClass = 'com.novoda.gradle.release.ReleasePlugin'
+        }
+    }
+}

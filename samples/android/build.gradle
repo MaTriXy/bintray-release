@@ -1,0 +1,26 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0.0"
+        archivesBaseName = "$archivesBaseName-$versionName"
+    }
+}
+
+dependencies {
+    implementation "com.android.support:appcompat-v7:27.0.2"
+}
+
+publish {
+    userOrg = 'novoda'
+    groupId = 'com.novoda'
+    artifactId = 'bintray-release.android.sample'
+    publishVersion = '0.0.1'
+    desc = 'Just a simple android lib sample'
+    website = 'https://github.com/novoda/bintray-release'
+}

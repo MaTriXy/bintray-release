@@ -1,2 +1,8 @@
-include ':core'
 rootProject.name = 'bintray-release'
+
+include ':core'
+project(':core').projectDir = file('plugin/core')
+project(':core').buildFileName = 'publish.gradle'
+
+include ':functional-tests'
+project(':functional-tests').projectDir = file('plugin/functional-tests')
